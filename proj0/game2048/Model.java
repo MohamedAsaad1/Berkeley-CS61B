@@ -1,6 +1,7 @@
 package game2048;
 
 import java.util.Formatter;
+import java.util.Map;
 import java.util.Observable;
 
 
@@ -136,9 +137,22 @@ public class Model extends Observable {
     /** Returns true if at least one space on the Board is empty.
      *  Empty spaces are stored as null.
      */
+
     public static boolean emptySpaceExists(Board b) {
-        // TODO: Fill in this function.
-        return false;
+        boolean indicator = false;
+    // this is one approach take (n*2)
+        for(int i = 0;i < 4;i++){
+            for (int j = 0;j < 4;j++){
+
+                if (b.tile(j,i)== null){
+                    indicator = true;
+                    break;
+                }
+            }
+        }
+
+
+    return indicator;
     }
 
     /**
@@ -147,8 +161,24 @@ public class Model extends Observable {
      * given a Tile object t, we get its value with t.value().
      */
     public static boolean maxTileExists(Board b) {
-        // TODO: Fill in this function.
-        return false;
+        int MAX_PIECE = 2048;
+        int  current_price = 0;
+        for(int i = 0;i < 4;i++){
+            for (int j = 0;j < 4;j++){
+
+                if (b.tile(j,i)== null){
+                    continue;
+                }
+                else{
+                   int  valueOfTiles = b.tile(j,i).value();
+                    if ( valueOfTiles > current_price){
+                        current_price = valueOfTiles;
+                    }
+                }
+            }
+        }
+    return MAX_PIECE == current_price;
+
     }
 
     /**
@@ -158,8 +188,31 @@ public class Model extends Observable {
      * 2. There are two adjacent tiles with the same value.
      */
     public static boolean atLeastOneMoveExists(Board b) {
-        // TODO: Fill in this function.
-        return false;
+        boolean emptyspaceexists = emptySpaceExists(b);
+        boolean max_exist = maxTileExists(b);
+        boolean indicator = false;
+        for(int i =0 ;i < 4;i++) {
+            if (indicator){break;}
+            for (int j = 1; j < 4; j++) {
+                Tile current = b.tile(j, i);
+                if ( max_exist || emptyspaceexists){indicator=true; break;}
+
+                else{
+                    if (current.value() == b.tile(j-1, i).value()) {
+                            indicator = true;
+                            break;
+                    }
+                    if (i < 3) {
+                        if (current.value() == b.tile(j, i+1).value()) {
+                            indicator= true;
+                            break;
+                        }
+                    }
+
+                    }
+            }
+        }
+    return indicator;
     }
 
     /** Returns the model as a string, used for debugging. */

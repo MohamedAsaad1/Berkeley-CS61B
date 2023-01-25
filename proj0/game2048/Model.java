@@ -9,6 +9,7 @@ import java.util.Observable;
  *  @author TODO: YOUR NAME HERE
  */
 public class Model extends Observable {
+
     /** Current contents of the board. */
     private final Board _board;
     /** Current score. */
@@ -17,6 +18,7 @@ public class Model extends Observable {
     private int _maxScore;
     /** True iff game is ended. */
     private boolean _gameOver;
+
 
     /* Coordinate System: column C, row R of the board (where row 0,
      * column 0 is the lower-left corner of the board) will correspond
@@ -117,10 +119,108 @@ public class Model extends Observable {
      *    and the trailing tile does not.
      */
     public void tilt(Side side) {
-        // TODO: Fill in this function.
 
+        _board.setViewingPerspective(side);
+        for (int c = 0; c < _board.size(); c ++) {
+            int temp = 0;
+            /**this for check if tile from down to up null or not if null move this tile like this
+            * |1 |2 |         1 2
+            * |null |4 |   => 5  4
+            * |5 |6 |         null 6(for explain this will be in real programs random number )
+            */
+            for (int r = _board.size() - 1; r >= 0; r--) {
+                Tile tile = _board.tile(c, r);
+                temp = check(tile,c,r);
+                if (temp!=0) {
+                    _board.move(c, temp, tile);
+                }
+            }
+            //this for merage
+            for (int r = _board.size() - 2; r >= 0; r --) {
+                Tile tile = _board.tile(c, r);
+//               int temp_r = check(tile,c,r);
+                if (tile!=null) {
+                    int rd = r;
+                    boolean check_merge = false;
+//                    if(temp_r!=0){
+//                        check_merge = true;
+//                        rd = temp_r;
+//                    }
+                    while (rd < _board.size() - 1 && _board.tile(c, rd + 1) == null) {
+                        rd ++;
+                        check_merge = true;
+                    }
+
+                        while (rd < _board.size() - 1 && _board.tile(c, rd + 1).value() == tile.value() && check_merge == false) {
+                            rd++;
+                            _score += 2 * tile.value();
+                        }
+
+                        _board.move(c, rd, tile);
+
+                }
+            }
+        }
+
+        _board.setViewingPerspective(Side.NORTH);
         checkGameOver();
+
+
+
+
+
+
+
+
+
+
+//	         0,3 | 1,3 | 2,3 | 3,3
+//           0,2 | 1,2 | 2,2 | 3,2
+//           0,1 | 1,1 | 2,1 | 3,1
+//           0,0 | 1,0 | 2,0 | 3,0
+//        final  int size = _board.size();
+//        _board.setViewingPerspective(side);
+//        for(int c =0;c < size;c++){
+
+//            for(int r = size-1; r >= 0;r--){
+//                Tile tile = _board.tile(c,r);
+//                if (tile != null){
+//                    int temp_r = r;
+//                    //to access the empty site
+//
+//                    while((temp_r < size - 1) && (_board.tile(c,r+1) == null)){
+//                        temp_r++;
+//                    }
+//                    _board.move(c,temp_r,tile);
+//                }
+//            }
+//            //this for merage
+//            //{2,2,2,x} {4,2,x,x}
+//            for(int merage_r = size - 2; merage_r >= 0; merage_r--) {
+//                boolean check_merage = false;
+//                Tile tile = _board.tile(c, merage_r);
+//
+//                Tile top_tile;
+//                if (tile != null) {
+//                    int r_m = merage_r;
+//                    while (r_m <_board.size()-1 && _board.tile(c,r_m+1) == null){
+//                        r_m++;
+//                        check_merage = true;
+//                    }
+//                    while (r_m < size - 1 && tile.value() == _board.tile(c, r_m).value() && check_merage == false) {
+//                        r_m++;
+//                        _score += 2*tile.value();
+//                    }
+//
+//                    _board.move(c, r_m, tile);
+//                }
+//            }
+//        }
+//        _board.setViewingPerspective(Side.NORTH);
+
+
     }
+//
 
     /** Checks if the game is over and sets the gameOver variable
      *  appropriately.
@@ -235,6 +335,17 @@ public class Model extends Observable {
         return out.toString();
     }
 
+private  int check(Tile tile , int c , int r){
+    if (tile != null) {
+        while (r < _board.size() - 1 && _board.tile(c, r + 1) == null) {
+            r++;
+        }
+
+        return r;
+    }
+    return 0;
+
+}
     /** Returns whether two models are equal. */
     @Override
     public boolean equals(Object o) {
@@ -253,3 +364,4 @@ public class Model extends Observable {
         return toString().hashCode();
     }
 }
+

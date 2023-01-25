@@ -105,7 +105,6 @@ public class Model extends Observable {
         checkGameOver();
         setChanged();
     }
-
     /** Tilt the board toward SIDE.
      *
      * 1. If two Tile objects are adjacent in the direction of motion and have
@@ -119,7 +118,6 @@ public class Model extends Observable {
      *    and the trailing tile does not.
      */
     public void tilt(Side side) {
-
         _board.setViewingPerspective(side);
         for (int c = 0; c < _board.size(); c ++) {
             int temp = 0;
@@ -150,77 +148,19 @@ public class Model extends Observable {
                         rd ++;
                         check_merge = true;
                     }
-
                         while (rd < _board.size() - 1 && _board.tile(c, rd + 1).value() == tile.value() && check_merge == false) {
                             rd++;
                             _score += 2 * tile.value();
                         }
-
                         _board.move(c, rd, tile);
-
                 }
             }
         }
-
         _board.setViewingPerspective(Side.NORTH);
         checkGameOver();
 
-
-
-
-
-
-
-
-
-
-//	         0,3 | 1,3 | 2,3 | 3,3
-//           0,2 | 1,2 | 2,2 | 3,2
-//           0,1 | 1,1 | 2,1 | 3,1
-//           0,0 | 1,0 | 2,0 | 3,0
-//        final  int size = _board.size();
-//        _board.setViewingPerspective(side);
-//        for(int c =0;c < size;c++){
-
-//            for(int r = size-1; r >= 0;r--){
-//                Tile tile = _board.tile(c,r);
-//                if (tile != null){
-//                    int temp_r = r;
-//                    //to access the empty site
-//
-//                    while((temp_r < size - 1) && (_board.tile(c,r+1) == null)){
-//                        temp_r++;
-//                    }
-//                    _board.move(c,temp_r,tile);
-//                }
-//            }
-//            //this for merage
-//            //{2,2,2,x} {4,2,x,x}
-//            for(int merage_r = size - 2; merage_r >= 0; merage_r--) {
-//                boolean check_merage = false;
-//                Tile tile = _board.tile(c, merage_r);
-//
-//                Tile top_tile;
-//                if (tile != null) {
-//                    int r_m = merage_r;
-//                    while (r_m <_board.size()-1 && _board.tile(c,r_m+1) == null){
-//                        r_m++;
-//                        check_merage = true;
-//                    }
-//                    while (r_m < size - 1 && tile.value() == _board.tile(c, r_m).value() && check_merage == false) {
-//                        r_m++;
-//                        _score += 2*tile.value();
-//                    }
-//
-//                    _board.move(c, r_m, tile);
-//                }
-//            }
-//        }
-//        _board.setViewingPerspective(Side.NORTH);
-
-
     }
-//
+
 
     /** Checks if the game is over and sets the gameOver variable
      *  appropriately.
@@ -365,3 +305,47 @@ private  int check(Tile tile , int c , int r){
     }
 }
 
+// draft
+//	         0,3 | 1,3 | 2,3 | 3,3
+//           0,2 | 1,2 | 2,2 | 3,2
+//           0,1 | 1,1 | 2,1 | 3,1
+//           0,0 | 1,0 | 2,0 | 3,0
+//        final  int size = _board.size();
+//        _board.setViewingPerspective(side);
+//        for(int c =0;c < size;c++){
+
+//            for(int r = size-1; r >= 0;r--){
+//                Tile tile = _board.tile(c,r);
+//                if (tile != null){
+//                    int temp_r = r;
+//                    //to access the empty site
+//
+//                    while((temp_r < size - 1) && (_board.tile(c,r+1) == null)){
+//                        temp_r++;
+//                    }
+//                    _board.move(c,temp_r,tile);
+//                }
+//            }
+//            //this for merage
+//            //{2,2,2,x} {4,2,x,x}
+//            for(int merage_r = size - 2; merage_r >= 0; merage_r--) {
+//                boolean check_merage = false;
+//                Tile tile = _board.tile(c, merage_r);
+//
+//                Tile top_tile;
+//                if (tile != null) {
+//                    int r_m = merage_r;
+//                    while (r_m <_board.size()-1 && _board.tile(c,r_m+1) == null){
+//                        r_m++;
+//                        check_merage = true;
+//                    }
+//                    while (r_m < size - 1 && tile.value() == _board.tile(c, r_m).value() && check_merage == false) {
+//                        r_m++;
+//                        _score += 2*tile.value();
+//                    }
+//
+//                    _board.move(c, r_m, tile);
+//                }
+//            }
+//        }
+//        _board.setViewingPerspective(Side.NORTH);

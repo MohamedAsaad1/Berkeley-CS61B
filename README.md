@@ -1,2 +1,2 @@
 # Berkeley-CS61B
-https://sp23.datastructur.es/
+https://fa22.datastructur.es/

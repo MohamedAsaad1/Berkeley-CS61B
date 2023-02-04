@@ -1,4 +1,5 @@
 package timingtest;
+import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.Stopwatch;
 
 /**
@@ -17,11 +18,52 @@ public class TimeAList {
         }
     }
 
-    public static void main(String[] args) {
-        timeAListConstruction();
+    /**
+     * 1. Create Stopwatch object.
+     * 2. Create empty ALists for timing tests and for storing results:
+     * Integer AList for number of items
+     * Double AList for Stopwatch times
+     * Integer AList for number of operation
+     * 3. Set target size of list.
+     * 4. Iterate over that target and addLast to the AList.
+     * Time this.
+     * 5. Store result in appropriate AList.
+     * 6. Once done, pass data to printTimingTable method.
+     */
+    public static void timeAListConstruction() {
+        AList<Integer> testSizes = new AList<>();
+        AList<Double> testTimes = new AList<>();
+        AList<Integer> testOps = new AList<>();
+
+        // Create AList of sizes for testList.
+        int number = 1000;
+        while (number <= 128000) {
+            testSizes.addLast(number);
+            number = number * 2;
+        }
+
+        // Iterate over testSizes
+        for (int n = 0; n < testSizes.size(); n++) {
+            AList<Integer> testList = new AList<>();
+            int size = testSizes.get(n);
+            // Call addLast as many times as each testSizes value.
+            // Time with Stopwatch sw.
+            Stopwatch sw = new Stopwatch();
+            for (int i = 0; i < size; i++) {
+                testList.addLast(i);
+            }
+            double timeInSeconds = sw.elapsedTime();
+            // Store in appropriate AList
+            testTimes.addLast(timeInSeconds);
+            // Store number of ops
+            testOps.addLast(size);
+        }
+
+        // Call print method
+        printTimingTable(testSizes, testTimes, testOps);
     }
 
-    public static void timeAListConstruction() {
-        // TODO: YOUR CODE HERE
+    public static void main(String[] args) {
+        timeAListConstruction();
     }
 }

@@ -137,13 +137,13 @@ public class ArrayDeque<Item> implements Deque<Item>, Iterable<Item> {
     }
 
     public Iterator<Item> iterator() {
-        return new ADequeIterator();
+        return new aDequeIterator();
     }
 
-    private class ADequeIterator<Item> implements Iterator<Item> {
+    private class aDequeIterator<Item> implements Iterator<Item> {
         private int position;
 
-        ADequeIterator() {
+        aDequeIterator() {
             position = 0;
         }
 
